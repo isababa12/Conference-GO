@@ -1,16 +1,9 @@
 from django.db import models
 from django.urls import reverse
+from presentations.models import Presentation
 
 
 class State(models.Model):
-    """
-    The State model represents a US state with its name
-    and abbreviation.
-
-    State is a Value Object and, therefore, does not have a
-    direct URL to view it.
-    """
-
     name = models.CharField(max_length=20)
     abbreviation = models.CharField(max_length=2)
 
@@ -22,16 +15,16 @@ class State(models.Model):
 
 
 class Location(models.Model):
-    """
-    The Location model describes the place at which an
-    Event takes place, like a hotel or conference center.
-    """
-
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     room_count = models.PositiveSmallIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    picture_url = models.TextField(null=True)
+    lat = models.FloatField(null=True)
+    lon = models.FloatField(null=True)
+    description = models.CharField(max_length=200, null=True)
+    temp = models.FloatField(null=True)
 
     state = models.ForeignKey(
         State,
@@ -50,13 +43,6 @@ class Location(models.Model):
 
 
 class Conference(models.Model):
-    """
-    The Conference model describes a specific conference.
-    """
-
-    # Has a one-to-many relationship with presentations.Presentation
-    # Has a one-to-many relationship with attendees.Attendee
-
     name = models.CharField(max_length=200)
     starts = models.DateTimeField()
     ends = models.DateTimeField()
